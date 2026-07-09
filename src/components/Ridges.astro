@@ -1,0 +1,35 @@
+---
+// The fixed parallax ridgefield — five SVG ridge silhouettes + mist + stars.
+// Each .px layer carries data-amp: how many px it rises across the whole page
+// scroll (eased in JS). Farther ridges are paler (atmospheric perspective)
+// and move less. Everything here is decorative → aria-hidden.
+---
+<div class="ridgefield" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="stars"></div>
+  <div class="moon"></div>
+
+  <svg class="ridge r5 px" data-amp="22" viewBox="0 0 1440 260" preserveAspectRatio="none">
+    <path d="M0,150 Q120,112 240,134 T480,120 T720,140 T960,108 T1200,132 T1440,116 L1440,260 L0,260 Z"/>
+  </svg>
+
+  <svg class="ridge r4 px" data-amp="42" viewBox="0 0 1440 260" preserveAspectRatio="none">
+    <path d="M0,170 Q110,126 230,152 T470,124 T700,152 T940,118 T1180,148 T1440,124 L1440,260 L0,260 Z"/>
+  </svg>
+
+  <div class="mist m1 px" data-amp="34"><div class="mist-inner"></div></div>
+
+  <svg class="ridge r3 px" data-amp="68" viewBox="0 0 1440 260" preserveAspectRatio="none">
+    <path d="M0,146 Q100,108 220,140 T460,102 T700,144 T940,100 T1180,140 T1440,110 L1440,260 L0,260 Z"/>
+  </svg>
+
+  <svg class="ridge r2 px" data-amp="100" viewBox="0 0 1440 260" preserveAspectRatio="none">
+    <path d="M0,118 Q140,70 280,112 T560,76 T840,118 T1120,70 T1440,100 L1440,260 L0,260 Z"/>
+  </svg>
+
+  <div class="mist m2 px" data-amp="82"><div class="mist-inner"></div></div>
+
+  <svg class="ridge r1 px" data-amp="140" viewBox="0 0 1440 260" preserveAspectRatio="none">
+    <path d="M0,110 Q240,58 480,102 Q720,140 960,94 Q1200,52 1440,86 L1440,260 L0,260 Z"/>
+  </svg>
+</div>

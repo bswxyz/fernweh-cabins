@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>How Fernweh was built — the guide</title><meta name="description" content="Build notes for Fernweh: an Astro static site with a long, lazy SVG ridge parallax, a calm booking teaser, and a docs/-folder GitHub Pages deploy."><meta name="theme-color" content="#26302a"><meta name="color-scheme" content="dark"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M5 26 L16 6 L27 26 Z' fill='none' stroke='%23c8b393' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M13 26 V17 H19 V26' fill='none' stroke='%23c8b393' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"><style>:root{--bg:#26302a;--panel:#2e3a33;--ink:#eae3d5;--dim:#b8ae9b;--sand:#c8b393;--moss:#7d8a5f;--line:rgba(234,227,213,.12);--max:760px}*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.68;-webkit-font-smoothing:antialiased}a{color:var(--sand)}a:hover{text-decoration:underline}.wrap{max-width:var(--max);margin:0 auto;padding:clamp(28px,6vw,80px) clamp(18px,5vw,32px)}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:3rem;font-family:Space Mono,monospace;font-size:.72rem;letter-spacing:.12em;color:var(--dim)}.top a{color:var(--dim);text-decoration:none}.top a:hover{color:var(--sand)}.ey{font-family:Space Mono,monospace;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sand);display:block;margin-bottom:2.4rem}h1{font-family:Spectral,serif;font-weight:300;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.08;letter-spacing:-.01em;margin-bottom:.7rem}h1 em{color:var(--sand);font-style:italic}.sub{color:var(--dim);font-size:1.08rem;margin-bottom:3rem}h2{font-family:Spectral,serif;font-weight:400;font-size:clamp(1.45rem,3.4vw,1.9rem);margin:2.9rem 0 1rem;letter-spacing:-.01em}p{color:#d9d2c2;margin:1rem 0}strong{color:var(--ink);font-weight:600}em{color:var(--sand)}ul{margin:1rem 0 1rem 1.15rem;color:#d9d2c2}li{margin:.5rem 0}pre{background:#202a24;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto;margin:1.2rem 0;font-family:Space Mono,monospace;font-size:.8rem;line-height:1.65;color:#d9d2c2}code{font-family:Space Mono,monospace;font-size:.86em;color:var(--sand)}pre code{color:inherit}figure{margin:1.8rem 0 2.4rem}figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block}figcaption{font-family:Space Mono,monospace;font-size:.66rem;color:var(--dim);margin-top:.7rem;letter-spacing:.06em}.rule{height:1px;background:var(--line);margin:3rem 0;border:0}.fine{color:var(--dim);font-size:.9rem}.back{display:inline-block;margin-top:2rem;font-family:Space Mono,monospace;font-size:.78rem;text-decoration:none}.back:hover{text-decoration:underline}:focus-visible{outline:2px solid var(--sand);outline-offset:3px;border-radius:2px}::selection{background:var(--sand);color:var(--bg)}
+</style></head> <body> <div class="wrap"> <div class="top"> <a href="/fernweh-cabins/">← Fernweh</a> <span>THE GUIDE · HOW IT WAS BUILT</span> </div> <span class="ey">Design showcase · build notes</span> <h1>A landscape that <em>lags behind you,</em> on purpose.</h1> <p class="sub">Fernweh is a booking site for cabins that don’t exist, built to move the way its
+    product feels: slow, layered, a little far away. These are the working notes — the idea, the
+    stack, and the two techniques that carry it.</p> <figure> <img src="/fernweh-cabins/assets/hero.jpg" width="1376" height="768" loading="lazy" decoding="async" alt="A timber cabin with a warmly lit glass gable wall on a forested hillside at dusk, mist pooling in the pine valleys behind it."> <figcaption>The one photograph on the site. Everything else — ridges, mist, stars, cabins — is SVG and CSS.</figcaption> </figure> <h2>The idea</h2> <p>Slow-travel brands usually oversell with photography. Fernweh undersells on purpose: one
+    misty photo, one whispered line (<em>“The signal fades. You won’t miss it.”</em>), and then a
+    world drawn from layered ridge silhouettes that drift as you scroll. The product’s promise is
+    the absence of things — wifi, signal, hurry — so the design’s job was restraint: minimal
+    chrome, a nav that stays out of the way, and “no wifi” typeset as an amenity, not a warning.</p> <p>The interaction patterns are borrowed from shipped booking products (researched on Mobbin):
+    Airbnb’s price-first booking card with visible arithmetic and its “you won’t be charged yet”
+    reassurance line, Booking.com’s name-→-distance tables, Tripadvisor’s availability-as-a-calm-fact.
+    Each one got de-alarmed and rewritten in Fernweh’s voice.</p> <h2>The stack — why Astro</h2> <ul> <li><strong>Astro 5, zero client framework.</strong> The page is content-heavy and mostly
+      static — cabins, seasons, copy. Astro renders the three cabin cards from a typed data array
+      at build time and ships plain HTML. The only JavaScript on the wire is one small script:
+      parallax, reveals, counters, and the booking-card state.</li> <li><strong>Component templating without hydration.</strong> <code>&lt;CabinArt kind="ember" /&gt;</code>
+and <code>&lt;Ridges /&gt;</code> are server-rendered SVG components — reusable like React
+      components, weightless like markup.</li> <li><strong>Spectral / Inter / Space Mono.</strong> A warm literary serif for the longing,
+      a plain grotesque for the UI, and a mono for everything measured — coordinates, kilometres,
+      Bortle ratings, temperatures. The mono is what makes remoteness read as fact.</li> <li><strong>One easing everywhere:</strong> <code>cubic-bezier(.19,1,.22,1)</code> — a long,
+      lazy settle. Reveals take 1.15s, the hero photo takes 3.2s. Nothing on this site is in a hurry.</li> </ul> <h2>Signature technique — the long lazy parallax</h2> <p>The backdrop is a <code>position:fixed</code> stack: a sky gradient, a box-shadow starfield,
+    five SVG ridge silhouettes and two blurred mist bands. Depth comes from two cheap tricks —
+    atmospheric perspective (farther ridges are paler and more transparent) and differential
+    motion (farther ridges move less):</p> <pre><code>&lt;svg class="ridge r5 px" data-amp="22"  ...&gt;  &lt;!-- farthest, palest --&gt;
+&lt;svg class="ridge r3 px" data-amp="68"  ...&gt;
+&lt;svg class="ridge r1 px" data-amp="140" ...&gt;  &lt;!-- nearest, darkest --&gt;</code></pre> <p>Instead of multiplying <code>scrollY</code> by a rate (which drifts unbounded on a long page),
+    each layer’s <code>data-amp</code> is the <em>total</em> distance it may rise across the whole
+    document. Scroll progress eases it there:</p> <pre><code>const p = Math.min(1, scrollY / (docHeight - innerHeight));
+for (const el of layers)
+  el.style.transform =
+    `translate3d(0, ${-p * el.dataset.amp}px, 0)`;</code></pre> <p>One rAF-throttled scroll handler paints every layer plus a slower-than-scroll drift on the
+    hero photograph. Each layer is anchored with a negative <code>bottom</code> equal to its
+    amplitude, so no seam ever shows. The mist bands add a second, time-based motion — a 34–46s
+    CSS <code>translateX</code> loop — so the landscape breathes even when you stop scrolling.
+    And because the whole thing reads through the transparent “slow manifesto” section, the ridges
+    become the page’s quietest moment instead of a background you scroll past.</p> <p><strong>Reduced motion:</strong> if <code>prefers-reduced-motion</code> is set, the scroll
+    listener is never attached, every CSS animation is killed with one media query, and the layers
+    hold their designed positions. The site is fully legible as a still image.</p> <h2>Details that matter</h2> <ul> <li><strong>The booking card does real arithmetic.</strong> Cabin chips, named date windows
+      (“New moon · Oct 12–15”), and a guest stepper feed one <code>update()</code> function that
+      recomputes $rate × nights, swaps the availability line (“Free. Bring the thick socks.”), and
+      warns — gently — when four people pick a two-sleeper. Submitting admits the truth:
+      nothing was sent, nobody was charged.</li> <li><strong>Anti-amenities as chips.</strong> “no wifi” and “no cell signal” render in moss
+      green with a ✕ — visually a feature, semantically annotated “— by design” for screen readers.</li> <li><strong>Distance as desirability.</strong> Every cabin carries a mono table — nearest city,
+      nearest paved road, nearest streetlight — with dotted leaders, like a topo-map legend.</li> <li><strong>Progressive enhancement.</strong> A synchronous one-liner adds <code>.js</code> to
+<code>&lt;html&gt;</code>; every reveal and hero animation is gated on it, so the page is
+      complete with scripts disabled.</li> <li><strong>The zero counter.</strong> The stats band animates 9, 187 and 4,548 — and writes
+      “0 bars of wifi” instantly, because some numbers shouldn’t need easing.</li> </ul> <h2>Ship it on GitHub Pages</h2> <p>Astro builds into <code>docs/</code> so Pages can serve the main branch directly — no Actions
+    workflow, no second branch. Three lines of config do all the path work:</p> <pre><code>// astro.config.mjs
+export default defineConfig({
+  site: 'https://bswxyz.github.io',
+  base: '/fernweh-cabins',
+  outDir: './docs',
+});</code></pre> <p>Internal links use <code>import.meta.env.BASE_URL</code> so nothing 404s under the
+<code>/fernweh-cabins/</code> prefix, and an empty <code>.nojekyll</code> in
+<code>public/</code> keeps Pages from mangling the output. Then:</p> <pre><code>npm run build
+git add -A &amp;&amp; git commit
+gh repo create bswxyz/fernweh-cabins --public --source . --push
+gh api --method POST /repos/bswxyz/fernweh-cabins/pages \
+  -f 'source[branch]=main' -f 'source[path]=/docs'
+# live at https://bswxyz.github.io/fernweh-cabins/ in ~a minute</code></pre> <hr class="rule"> <p class="fine">Fernweh is a design-showcase concept — the cabins are fictional, the booking
+    card is a teaser, and the only photograph is AI-generated. See the repository README for the
+    full demo-vs-real map.</p> <a class="back" href="/fernweh-cabins/">← Back to Fernweh</a> </div>  </body> </html>

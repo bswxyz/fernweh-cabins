@@ -1,0 +1,73 @@
+---
+// Hand-drawn SVG line illustrations for the three cabins.
+// No photos on the cards — each cabin is a nightscape line drawing.
+const { kind, label } = Astro.props as { kind: 'ember' | 'sova' | 'lichen'; label: string };
+---
+<div class="cabin-art" role="img" aria-label={label}>
+{kind === 'ember' && (
+  <svg viewBox="0 0 320 200" fill="none">
+    <g class="art-stars">
+      <circle cx="38" cy="38" r="1.6"/><circle cx="86" cy="60" r="1.1"/>
+      <circle class="tw" cx="122" cy="28" r="1.4"/><circle cx="206" cy="24" r="1.2"/>
+      <circle class="tw tw2" cx="252" cy="46" r="1.7"/><circle cx="292" cy="74" r="1.1"/>
+      <circle cx="60" cy="90" r="1"/>
+    </g>
+    <circle cx="282" cy="34" r="10" fill="var(--sand)" opacity=".75"/>
+    <circle cx="287" cy="29" r="9" fill="#1e2721"/>
+    <path class="ln" d="M20 162 H300" stroke-dasharray="2 7"/>
+    <path class="ln lw" d="M90 162 L160 52 L230 162"/>
+    <path class="ln" d="M117 120 H203"/>
+    <path class="ln" d="M148 162 V124 H172 V162"/>
+    <circle cx="160" cy="98" r="26" fill="var(--sand)" opacity=".07"/>
+    <path class="ln glow" d="M160 76 L182 114 H138 Z"/>
+    <path class="ln" d="M196 108 V70 M206 116 V70 M192 70 H210"/>
+    <path class="ln smoke" d="M201 62 C196 52 208 46 202 36 C197 28 206 22 202 14"/>
+    <path class="ln pine" d="M40 162 L54 114 L68 162 Z M252 162 L268 110 L284 162 Z"/>
+  </svg>
+)}
+{kind === 'sova' && (
+  <svg viewBox="0 0 320 200" fill="none">
+    <g class="art-stars">
+      <circle cx="46" cy="30" r="1.4"/><circle class="tw" cx="104" cy="48" r="1.2"/>
+      <circle cx="150" cy="26" r="1.5"/><circle cx="216" cy="40" r="1.1"/>
+      <circle class="tw tw2" cx="278" cy="26" r="1.5"/><circle cx="300" cy="58" r="1"/>
+    </g>
+    <circle cx="34" cy="52" r="9" fill="var(--sand)" opacity=".75"/>
+    <circle cx="38" cy="47" r="8" fill="#1e2721"/>
+    <path class="ln" d="M20 162 H300" stroke-dasharray="2 7"/>
+    <path class="ln lw" d="M58 162 V112 L192 100 V162"/>
+    <path class="ln" d="M50 114 L200 100"/>
+    <circle cx="95" cy="137" r="0" />
+    <path class="ln glow" d="M76 126 H112 V150 H76 Z"/>
+    <path class="ln" d="M128 128 H150 V148 H128 Z"/>
+    <path class="ln" d="M160 162 V134 H180 V162"/>
+    <path class="ln lw" d="M232 162 V128 H282 V162"/>
+    <path class="ln" d="M226 130 L257 108 L288 130"/>
+    <path class="ln" d="M262 114 V94 M270 120 V94 M258 94 H274"/>
+    <path class="ln smoke" d="M266 88 C261 78 273 72 267 62 C262 54 271 48 267 40"/>
+    <path class="ln pine" d="M198 168 h8 M212 171 h8 M224 167 h8"/>
+    <path class="ln pine" d="M30 162 V92 M30 112 l-10 -12 M30 128 l10 -10 M30 100 l8 -9"/>
+  </svg>
+)}
+{kind === 'lichen' && (
+  <svg viewBox="0 0 320 200" fill="none">
+    <g class="art-stars">
+      <circle cx="42" cy="44" r="1.3"/><circle class="tw" cx="92" cy="26" r="1.5"/>
+      <circle cx="140" cy="44" r="1.1"/><circle cx="178" cy="24" r="1.3"/>
+      <circle class="tw tw2" cx="228" cy="38" r="1.6"/><circle cx="266" cy="24" r="1.2"/>
+      <circle cx="296" cy="52" r="1.4"/><circle cx="66" cy="70" r="1"/>
+    </g>
+    <ellipse cx="205" cy="46" rx="72" ry="12" fill="var(--sand)" opacity=".06" transform="rotate(-16 205 46)"/>
+    <path class="ln" d="M20 162 H300" stroke-dasharray="2 7"/>
+    <path class="ln lw" d="M92 162 V130 M228 162 V130"/>
+    <path class="ln lw" d="M84 132 Q160 84 236 132"/>
+    <path class="ln pine" d="M112 114 v-9 M130 104 v-10 M160 97 v-10 M190 104 v-10 M208 114 v-9"/>
+    <circle cx="160" cy="98" r="0"/>
+    <circle class="ln glow" cx="152" cy="144" r="13"/>
+    <path class="ln" d="M196 162 V136 H216 V162"/>
+    <path class="ln" d="M118 104 V80 M126 102 V80 M114 80 H130"/>
+    <path class="ln smoke" d="M122 74 C117 64 129 58 123 48 C118 40 127 34 123 26"/>
+    <path class="ln" d="M40 162 q12 -20 28 0 M252 162 q13 -16 28 0"/>
+  </svg>
+)}
+</div>

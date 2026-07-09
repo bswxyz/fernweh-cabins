@@ -1,0 +1,443 @@
+---
+import '../styles/global.css';
+import Ridges from '../components/Ridges.astro';
+import CabinArt from '../components/CabinArt.astro';
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
+
+const cabins = [
+  {
+    id: 'ember', kind: 'ember', name: 'The Ember',
+    loc: '63.1° N · Hollow Fell ridge',
+    art: 'Line drawing of a steep A-frame cabin at night — a lit triangular window, smoke curling from the stove pipe, pines either side, a crescent moon above.',
+    meta: ['Sleeps 2', '1 loft bed', 'wood stove', 'no sauna'],
+    dist: [['the nearest city', '214 km'], ['the nearest paved road', '9 km'], ['the nearest streetlight', '31 km']],
+    bortle: 2, bortleDots: 4, bortleNote: 'Milky Way overhead',
+    amen: [
+      { t: 'spring water', yes: true }, { t: 'firewood, split', yes: true }, { t: 'a tarn to plunge in', yes: true },
+      { t: 'wifi', yes: false }, { t: 'cell signal', yes: false },
+    ],
+    price: 240, min: '3-night min',
+  },
+  {
+    id: 'sova', kind: 'sova', name: 'The Sova',
+    loc: '61.4° N · Lake Havra shore',
+    art: 'Line drawing of a long, low cabin by night with two lit windows, a small sauna hut beside it with smoke rising, stepping stones between them, a birch to the left.',
+    meta: ['Sleeps 4', '2 bed nooks', 'wood stove', 'cedar sauna'],
+    dist: [['the nearest city', '162 km'], ['the nearest paved road', '4 km'], ['the nearest streetlight', '18 km']],
+    bortle: 3, bortleDots: 3, bortleNote: 'faint airglow, no more',
+    amen: [
+      { t: 'lakeside sauna', yes: true }, { t: 'rowboat, oars', yes: true }, { t: 'spring water', yes: true },
+      { t: 'wifi', yes: false }, { t: 'cell signal', yes: false },
+    ],
+    price: 310, min: '3-night min',
+  },
+  {
+    id: 'lichen', kind: 'lichen', name: 'The Lichen',
+    loc: '64.8° N · the Birch Saeter',
+    art: 'Line drawing of a low turf-roofed cabin at night, grass tufts on the roof, one round lit window, boulders either side, a soft band of Milky Way above.',
+    meta: ['Sleeps 2', 'box bed', 'wood stove', 'no sauna'],
+    dist: [['the nearest city', '268 km'], ['the nearest paved road', '14 km'], ['the nearest streetlight', '52 km']],
+    bortle: 1, bortleDots: 5, bortleNote: 'the sky casts shadows',
+    amen: [
+      { t: 'roof hatch for stars', yes: true }, { t: 'writing desk', yes: true }, { t: 'spring water', yes: true },
+      { t: 'wifi', yes: false }, { t: 'cell signal', yes: false },
+    ],
+    price: 265, min: '3-night min',
+  },
+];
+
+const seasons = [
+  { name: 'Thaw', months: 'Apr — May', temp: '−2°…9°C', line: 'Meltwater loud in the valley. Fires die by noon; the year’s first coffee outside, bare-armed and shivering slightly.' },
+  { name: 'Long light', months: 'Jun — Aug', temp: '9°…22°C', line: 'The sun barely bothers to set. Neither, you’ll find, will you.' },
+  { name: 'Rust', months: 'Sep — Oct', temp: '1°…12°C', line: 'The birches go over to gold, and the sauna starts earning its keep.' },
+  { name: 'Hush', months: 'Nov — Mar', temp: '−18°…0°C', line: 'Snow to the sills. The stove becomes the only clock worth keeping.' },
+];
+
+const title = 'Fernweh — off-grid cabins for people who need to be unreachable';
+const description = 'Nine architect-built cabins, far past the last paved road. Wood heat, spring water, dark skies — and no wifi, on purpose. A slow-travel booking concept.';
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script is:inline>document.documentElement.classList.add('js')</script>
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="theme-color" content="#26302a" />
+<meta name="color-scheme" content="dark" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={`https://bswxyz.github.io${base}assets/hero.jpg`} />
+<link rel="icon" href={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M5 26 L16 6 L27 26 Z' fill='none' stroke='%23c8b393' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M13 26 V17 H19 V26' fill='none' stroke='%23c8b393' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E`} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<Ridges />
+
+<header class="nav" id="nav">
+  <a class="brand" href={base} aria-label="Fernweh home">Fern<em>weh</em></a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#cabins">Cabins</a>
+    <a href="#seasons">Seasons</a>
+    <a href={`${base}guide/`}>Guide</a>
+    <a class="nav-cta" href="#book">Book a stay</a>
+  </nav>
+</header>
+
+<div class="page">
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-photo">
+      <img src={`${base}assets/hero.jpg`} width="1376" height="768"
+        alt="A timber cabin with a warmly lit glass gable wall standing on a forested hillside at dusk, low mist pooling in the pine valleys behind it."
+        fetchpriority="high" decoding="async" />
+    </div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="wrap hero-copy">
+      <p class="eyebrow fade d1">Fernweh <span class="def">· n. — an ache for far-off places</span></p>
+      <h1 class="hero-title">
+        <span class="line"><span>The signal fades.</span></span>
+        <span class="line"><span><em>You won’t miss it.</em></span></span>
+      </h1>
+      <p class="hero-sub fade d2">Nine architect-built cabins, far past the last paved road.
+        Wood heat, spring water, skies you’d forgotten. No wifi — that isn’t an oversight.</p>
+      <a class="hero-go fade d3" href="#cabins"><span class="tick" aria-hidden="true"></span>Walk down to the cabins</a>
+    </div>
+  </section>
+
+  <!-- ================= CABINS ================= -->
+  <section id="cabins" class="solid section-pad" aria-labelledby="cabins-h">
+    <div class="wrap">
+      <p class="kicker reveal">The cabins · three of nine</p>
+      <h2 id="cabins-h" class="reveal">Three ways to <em>disappear.</em></h2>
+      <p class="lede reveal">Each one is a one-off, built for its ridge and nothing else.
+        Booked by the night, warmed by wood, measured by how far away everything is.
+        The other six you’ll meet when you arrive.</p>
+
+      <div class="cabin-grid">
+        {cabins.map((c, i) => (
+          <article class="cabin reveal" style={`transition-delay:${i * 0.12}s`}>
+            <CabinArt kind={c.kind} label={c.art} />
+            <div class="cabin-body">
+              <p class="cabin-loc">{c.loc}</p>
+              <h3>{c.name}</h3>
+              <p class="cabin-meta">
+                {c.meta.map((m, j) => (<Fragment>{j > 0 && <span class="dot" aria-hidden="true">·</span>}{m}</Fragment>))}
+              </p>
+              <ul class="dist">
+                {c.dist.map(([k, v]) => (
+                  <li><span class="k">{k}</span><span class="leader" aria-hidden="true"></span><span class="v">{v}</span></li>
+                ))}
+              </ul>
+              <p class="sky-row">
+                <span>dark sky</span>
+                <span class="sky-dots" aria-hidden="true">
+                  {[1, 2, 3, 4, 5].map((n) => (<i class={n <= c.bortleDots ? 'on' : ''}></i>))}
+                </span>
+                <span>Bortle {c.bortle} — {c.bortleNote}</span>
+              </p>
+              <div class="amen" role="list" aria-label={`What ${c.name} offers`}>
+                {c.amen.map((a) => (
+                  <span class={`chip ${a.yes ? 'yes' : 'no'}`} role="listitem">
+                    {a.yes ? a.t : `no ${a.t}`}<span class="sr-only">{a.yes ? ' — included' : ' — by design'}</span>
+                  </span>
+                ))}
+              </div>
+              <div class="cabin-foot">
+                <span class="price">${c.price} <span>/ night</span></span>
+                <span class="min">{c.min}</span>
+              </div>
+              <a class="cabin-cta" href="#book" data-cabin={c.id}>Check dates →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="cabin-note reveal">The ✕ marks aren’t apologies. Coverage ends forty minutes
+        before you do — we chose these ridges for it.</p>
+    </div>
+  </section>
+
+  <!-- ================= MANIFESTO — ridges drift behind ================= -->
+  <section class="manifesto" aria-label="The slow manifesto">
+    <div class="wrap">
+      <p class="mani-line reveal">We built Fernweh for the tiredness that sleep doesn’t fix.</p>
+      <p class="mani-line soft reveal" style="transition-delay:.1s">For the fortieth tab, the doubled
+        inbox, the year you kept meaning to look up.</p>
+      <p class="mani-line reveal" style="transition-delay:.2s">Out here the day has three appointments:
+        <em>the fire, the meal, the sky.</em></p>
+      <p class="mani-line soft reveal" style="transition-delay:.3s">Boredom arrives on day two.
+        Stay past it — underneath is everything you came for.</p>
+      <p class="mani-sig reveal" style="transition-delay:.4s">— the slow manifesto · read it again, slower</p>
+    </div>
+  </section>
+
+  <!-- ================= SEASONS — the cream band ================= -->
+  <section id="seasons" class="seasons section-pad" aria-labelledby="seasons-h">
+    <div class="wrap">
+      <p class="kicker reveal">The year, out here</p>
+      <h2 id="seasons-h" class="reveal">Four seasons, none of them <em>busy.</em></h2>
+      <p class="lede reveal">The cabins stay open all year. What changes is the light,
+        the water, and what the stove is for.</p>
+      <div class="season-grid">
+        {seasons.map((s, i) => (
+          <article class="season reveal" style={`transition-delay:${i * 0.1}s`}>
+            <div class="season-top">
+              <h3 class="season-name">{s.name}</h3>
+              <span class="season-temp">{s.temp}</span>
+            </div>
+            <p class="season-months" aria-label={`Months: ${s.months}`}>{s.months}</p>
+            <p>{s.line}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <section class="solid stats-band section-pad" aria-label="Fernweh in numbers">
+    <div class="wrap stats">
+      <div class="stat reveal">
+        <b><span data-to="9">0</span></b>
+        <span>cabins, five ridges</span>
+      </div>
+      <div class="stat reveal" style="transition-delay:.1s">
+        <b><span data-to="187">0</span><i>km</i></b>
+        <span>mean distance from a city</span>
+      </div>
+      <div class="stat reveal" style="transition-delay:.2s">
+        <b><span data-to="4548">0</span></b>
+        <span>stars overhead, new-moon night</span>
+      </div>
+      <div class="stat reveal" style="transition-delay:.3s">
+        <b><span data-to="0">0</span><i>bars</i></b>
+        <span>of wifi — a promise, kept</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BOOK ================= -->
+  <section id="book" class="section-pad" aria-labelledby="book-h">
+    <div class="wrap book-grid">
+      <div class="book-copy">
+        <p class="kicker reveal">Book a stay</p>
+        <h2 id="book-h" class="reveal">Book the <em>quiet.</em></h2>
+        <p class="lede reveal">Pick a cabin and a window, tell us how many of you there are.
+          A person — not a system — writes back within two days. Things move slowly here;
+          that’s rather the point.</p>
+        <ul class="mono-list reveal">
+          <li>no account, no app, no calendar sync</li>
+          <li>the stove is lit before you arrive</li>
+          <li>cancel up to 14 days out, no questions</li>
+          <li>directions arrive by letter. really.</li>
+        </ul>
+      </div>
+
+      <form class="book-card reveal" id="bookCard" aria-label="Request a stay" onsubmit="return false">
+        <div class="bc-head">
+          <span class="rate" id="rate">$240 <span>/ night</span></span>
+          <span class="no">№ 001—009</span>
+        </div>
+
+        <div>
+          <span class="bc-label" id="cabinLbl">The cabin</span>
+          <div class="chips" role="group" aria-labelledby="cabinLbl">
+            <button type="button" class="pick" data-cabin="ember" aria-pressed="true">The Ember</button>
+            <button type="button" class="pick" data-cabin="sova" aria-pressed="false">The Sova</button>
+            <button type="button" class="pick" data-cabin="lichen" aria-pressed="false">The Lichen</button>
+          </div>
+        </div>
+
+        <div>
+          <span class="bc-label" id="stayLbl">The window</span>
+          <div class="chips" role="group" aria-labelledby="stayLbl">
+            <button type="button" class="pick" data-stay="newmoon" aria-pressed="true">New moon · Oct 12–15</button>
+            <button type="button" class="pick" data-stay="firstsnow" aria-pressed="false">First snow · Nov 20–23</button>
+            <button type="button" class="pick" data-stay="midwinter" aria-pressed="false">Midwinter · Jan 9–13</button>
+          </div>
+        </div>
+
+        <div class="dates" aria-live="polite">
+          <div><span class="bc-label">Check-in</span><output id="ci">Oct 12</output></div>
+          <div><span class="bc-label">Check-out</span><output id="co">Oct 15</output></div>
+        </div>
+
+        <div class="guests">
+          <output id="guestsOut" aria-live="polite">2 guests</output>
+          <div class="step">
+            <button type="button" id="gMinus" aria-label="One fewer guest">−</button>
+            <button type="button" id="gPlus" aria-label="One more guest">+</button>
+          </div>
+        </div>
+
+        <ul class="math" aria-live="polite">
+          <li><span id="mLbl">$240 × 3 nights</span><span class="leader" aria-hidden="true"></span><span class="v" id="mVal">$720</span></li>
+          <li><span>wifi</span><span class="leader" aria-hidden="true"></span><span class="v">$0 — none to bill</span></li>
+          <li class="total"><span>Total, before weather</span><span class="leader" aria-hidden="true"></span><span class="v" id="mTotal">$720</span></li>
+        </ul>
+
+        <p class="avail" id="avail" aria-live="polite">Those nights are free. They usually are.</p>
+
+        <button type="submit" class="btn-book" id="reqBtn">Request to book</button>
+        <p class="bc-fine" id="fine">You won’t be charged — there’s nothing to charge.
+          Fernweh is a design study; a real one would write back within two days.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <p class="foot-brand">Fernweh</p>
+        <p class="foot-tag">Architect-built cabins, far off the grid. Slow travel for the over-signalled.</p>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="#cabins">Cabins</a>
+        <a href="#seasons">Seasons</a>
+        <a href="#book">Book</a>
+        <a href={`${base}guide/`}>Guide</a>
+      </nav>
+      <p class="foot-coord">63° N-ish · past the last paved road<br />dark skies · 0 bars · post arrives weekly</p>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Fernweh — a design-showcase concept, not a real booking service.</span>
+      <span>Designed &amp; built by Fable · <a href={`${base}guide/`}>How this was built →</a></span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- the long lazy parallax ---------- */
+  const layers = Array.from(document.querySelectorAll('.px'));
+  const heroImg = document.querySelector('.hero-photo img');
+  let docH = 1, ticking = false;
+  const measure = () => { docH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+  const paint = () => {
+    ticking = false;
+    const y = scrollY;
+    const p = Math.min(1, y / docH);
+    for (const el of layers) {
+      el.style.transform = `translate3d(0, ${(-p * Number(el.dataset.amp)).toFixed(2)}px, 0)`;
+    }
+    if (heroImg && y < innerHeight * 1.3) {
+      heroImg.style.transform = `translate3d(0, ${(y * 0.16).toFixed(2)}px, 0)`;
+    }
+  };
+  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(paint); } };
+  if (!reduced) {
+    measure(); paint();
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', () => { measure(); queue(); }, { passive: true });
+  }
+
+  /* ---------- nav: nearly invisible until needed ---------- */
+  const nav = document.getElementById('nav');
+  const navCheck = () => nav.classList.toggle('scrolled', scrollY > 24);
+  addEventListener('scroll', navCheck, { passive: true });
+  navCheck();
+
+  /* ---------- reveals ---------- */
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  // Deterministic fallback for deep links (/#book etc.): anything already in
+  // view gets revealed on load, whatever the observer decides to deliver.
+  const revealNow = () => {
+    for (const el of document.querySelectorAll('.reveal:not(.in)')) {
+      const r = el.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) { el.classList.add('in'); io.unobserve(el); }
+    }
+  };
+  addEventListener('load', () => { revealNow(); setTimeout(revealNow, 800); });
+
+  /* ---------- counters ---------- */
+  const fmt = (n) => Math.round(n).toLocaleString('en-US');
+  const quint = (t) => 1 - Math.pow(1 - t, 5);
+  const runCounter = (el) => {
+    const to = Number(el.dataset.to);
+    if (reduced || to === 0) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 2200;
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      el.textContent = fmt(to * quint(p));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const cio = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { runCounter(e.target); cio.unobserve(e.target); }
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-to]').forEach((el) => cio.observe(el));
+
+  /* ---------- the booking teaser ---------- */
+  const CABINS = {
+    ember:  { name: 'The Ember',  rate: 240, sleeps: 2 },
+    sova:   { name: 'The Sova',   rate: 310, sleeps: 4 },
+    lichen: { name: 'The Lichen', rate: 265, sleeps: 2 },
+  };
+  const STAYS = {
+    newmoon:   { ci: 'Oct 12', co: 'Oct 15', nights: 3, note: 'Those nights are free. They usually are.' },
+    firstsnow: { ci: 'Nov 20', co: 'Nov 23', nights: 3, note: 'Free — and the forecast keeps hinting at snow.' },
+    midwinter: { ci: 'Jan 9',  co: 'Jan 13', nights: 4, note: 'Free. Bring the thick socks.' },
+  };
+  const state = { cabin: 'ember', stay: 'newmoon', guests: 2 };
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => '$' + n.toLocaleString('en-US');
+
+  const update = () => {
+    const c = CABINS[state.cabin], s = STAYS[state.stay];
+    $('rate').innerHTML = `${money(c.rate)} <span>/ night</span>`;
+    $('ci').textContent = s.ci;
+    $('co').textContent = s.co;
+    $('guestsOut').textContent = `${state.guests} ${state.guests === 1 ? 'guest' : 'guests'}`;
+    $('mLbl').textContent = `${money(c.rate)} × ${s.nights} nights`;
+    const total = money(c.rate * s.nights);
+    $('mVal').textContent = total;
+    $('mTotal').textContent = total;
+    $('avail').textContent = state.guests > c.sleeps
+      ? `${c.name} sleeps ${c.sleeps}. The Sova takes four — nobody has to draw straws.`
+      : s.note;
+    $('gMinus').disabled = state.guests <= 1;
+    $('gPlus').disabled = state.guests >= 4;
+    document.querySelectorAll('.pick[data-cabin]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.cabin === state.cabin)));
+    document.querySelectorAll('.pick[data-stay]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.stay === state.stay)));
+  };
+
+  document.querySelectorAll('.pick[data-cabin]').forEach((b) =>
+    b.addEventListener('click', () => { state.cabin = b.dataset.cabin; update(); }));
+  document.querySelectorAll('.pick[data-stay]').forEach((b) =>
+    b.addEventListener('click', () => { state.stay = b.dataset.stay; update(); }));
+  $('gMinus').addEventListener('click', () => { state.guests = Math.max(1, state.guests - 1); update(); });
+  $('gPlus').addEventListener('click', () => { state.guests = Math.min(4, state.guests + 1); update(); });
+
+  document.querySelectorAll('.cabin-cta[data-cabin]').forEach((a) =>
+    a.addEventListener('click', () => { state.cabin = a.dataset.cabin; update(); }));
+
+  $('reqBtn').addEventListener('click', () => {
+    const btn = $('reqBtn');
+    btn.disabled = true;
+    btn.textContent = 'Request sent — kettle’s on';
+    $('fine').textContent = 'Or it would be, if this were real. Nothing was sent, nobody was charged, and the cabins remain — regrettably — fictional.';
+  });
+  update();
+</script>
+</body>
+</html>
