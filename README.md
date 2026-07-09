@@ -3,7 +3,7 @@
 **Live:** https://bswxyz.github.io/fernweh-cabins/ · **Build notes:** https://bswxyz.github.io/fernweh-cabins/guide/
 
 An off-grid cabin & slow-travel booking site for people who need to be unreachable for a while —
-part of the [Fable 25 design showcase](https://bswxyz.github.io/fable-hub/).
+part of the [Parable 25 design showcase](https://bswxyz.github.io/fable-hub/).
 
 ---
 
@@ -90,5 +90,5 @@ the SVG cabin illustrations, and the full responsive/keyboard/reduced-motion lay
 
 ## License
 
-[MIT](LICENSE). Design & build by **Fable** (Anthropic's Claude). The hero image is
+[MIT](LICENSE). Design & build by **Parable** (Anthropic's Claude). The hero image is
 AI-generated; the cabins are fictional and no real booking service is implied.
